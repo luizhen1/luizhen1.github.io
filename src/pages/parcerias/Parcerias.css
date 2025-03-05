@@ -1,0 +1,34 @@
+.partners-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: -10px;
+  }
+  
+  .partner-item {
+    text-align: center;
+    margin: 10px;
+  }
+  
+  .partner-item img {
+    width: 250px; /* Defina a largura desejada */
+    height: auto; /* Isso garante que a altura seja ajustada automaticamente para manter a proporção */
+  }
+
+  .empresas h1{
+    text-align: center;
+  }
+
+  .logo img {
+    width: 100%; /* Define a largura da imagem para 100% do contêiner */
+    max-width: 500px; /* Define a largura máxima da imagem */
+    display: block; /* Para centralizar a imagem */
+    margin: 0 auto; /* Para centralizar a imagem */
+  }
+  
+  .partner-item img {
+    max-width: 100%; /* Para garantir que as imagens dos parceiros sejam responsivas */
+    height: auto; /* Para garantir que as imagens dos parceiros sejam responsivas */
+  }
+  

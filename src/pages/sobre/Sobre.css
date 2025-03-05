@@ -1,0 +1,46 @@
+/* Sobre.css */
+body {
+  background-color: #d9d9d9; /* Define a cor de fundo para o corpo da página */
+}
+
+.container {
+  text-align: center; 
+  max-width: 800px; /* Define a largura máxima do conteúdo */
+  margin: 0 auto; /* Centraliza o conteúdo na página */
+  padding: 0 20px; /* Adiciona algum espaçamento nas laterais */
+}
+
+.container img {
+  max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
+  height: auto; /* Mantém a proporção da imagem */
+}
+
+h1 {
+  font-size: 2.5rem; /* Tamanho da fonte para cabeçalhos */
+  margin-bottom: 20px; /* Adiciona espaço abaixo do título */
+}
+
+p {
+  font-size: 1.2rem; /* Tamanho da fonte para parágrafos */
+  line-height: 1.5; /* Altura da linha para uma leitura mais fácil */
+}
+
+/* Estilos para tornar o layout responsivo usando Flexbox */
+
+.container {
+  display: flex; /* Usa Flexbox para o layout */
+  flex-direction: column; /* Empilha os elementos verticalmente */
+  align-items: center; /* Centraliza os elementos horizontalmente */
+}
+
+/* Adicione as regras de mídia para ajustar o layout em tamanhos de tela menores */
+
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 2rem; /* Reduz o tamanho do título para telas menores */
+  }
+
+  p {
+    font-size: 1rem; /* Reduz o tamanho do parágrafo para telas menores */
+  }
+}

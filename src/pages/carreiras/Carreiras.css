@@ -1,0 +1,81 @@
+/* CareerPage.css */
+
+.career-page-container {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .career-page-container img{
+    width: 50%; /* Define a largura da imagem para 100% do contêiner */
+    max-width: 500px; /* Define a largura máxima da imagem */
+    display: block; /* Para centralizar a imagem */
+    margin: -80px auto; /* Para centralizar a imagem */
+  }
+  
+  .job-listing {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .application-form {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .application-form h2 {
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .application-form form {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .application-form input[type='text'],
+  .application-form input[type='email'],
+  .application-form input[type='tel'],
+  .application-form input[type='file'] {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .application-form input[type='file'] {
+    border: none;
+  }
+  
+  .application-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .application-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .career-page-container {
+      margin-top: 50px;
+      padding: 20px;
+    }
+
+    .career-page-container h1{
+        margin-top: 50px;
+    }
+  
+      
+  }
+  
