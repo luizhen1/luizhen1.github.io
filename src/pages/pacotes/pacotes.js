@@ -7,11 +7,12 @@ import Maldives from './maldives.jpg';
 import Grenada from './grenada.jpg';
 import Barbados from './barbados.jpg';
 import KeyWest from './keywest.jpg';
-
+import { db } from '../../firebaseConfig';
+import { collection, addDoc } from "firebase/firestore";
 
 Modal.setAppElement('#root');
 
-const pacotes = [
+const pacotesList = [ // mudei o nome para não conflitar com o componente
   { nome: 'Bora Bora', imagem: BoraBora, preco: 'R$10.000', descricao: 'Pacote incrível para Bora Bora.' },
   { nome: 'Emerald Bay', imagem: EmeraldBay, preco: 'R$8.500', descricao: 'Descubra Emerald Bay.' },
   { nome: 'Maldives', imagem: Maldives, preco: 'R$12.000', descricao: 'Visite as paradisíacas Maldives.' },
@@ -25,13 +26,22 @@ const Pacotes = () => {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
+  const [nomeCompleto, setNomeCompleto] = useState(''); // Movi para dentro do componente
+  const [email, setEmail] = useState('');             // Movi para dentro do componente
+  const [telefone, setTelefone] = useState('');
   const [message, setMessage] = useState('');
-  const [isError, setIsError] = useState(false); // Novo estado para controlar se é erro
+  const [isError, setIsError] = useState(false);
 
   const openModal = (pacote) => {
-    setSelectedPackage(pacote);
-    setIsModalOpen(true);
-    setMessage(''); // Reset message on modal open
+    const estaLogado = localStorage.getItem('usuarioLogado');
+
+    if (estaLogado === 'true') {
+      setSelectedPackage(pacote);
+      setIsModalOpen(true);
+      setMessage('');
+    } else {
+      alert('Você precisa estar logado para reservar um pacote!');
+    }
   };
 
   const closeModal = () => {
@@ -39,22 +49,43 @@ const Pacotes = () => {
     setSelectedPackage(null);
     setCheckInDate('');
     setCheckOutDate('');
+    setNomeCompleto('');
+    setEmail('');
+    setTelefone('');
     setMessage('');
-    setIsError(false); // Reset error state
+    setIsError(false);
   };
 
-  const handleConfirm = (e) => {
+  // ADICIONADO O ASYNC AQUI ABAIXO
+  const handleConfirm = async (e) => {
     e.preventDefault();
 
     const today = new Date();
     const checkOut = new Date(checkOutDate);
 
     if (checkOut >= today) {
-      setMessage('Reserva efetuada com sucesso!');
-      setIsError(false); // Não é erro, portanto definimos como falso
+      try {
+        // Agora o await vai funcionar
+        await addDoc(collection(db, "reservas"), {
+          cliente: nomeCompleto,
+          email: email,
+          telefone: telefone,
+          pacote: selectedPackage.nome,
+          dataEntrada: checkInDate,
+          dataSaida: checkOutDate,
+          dataSolicitacao: new Date()
+        });
+
+        setMessage('Reserva efetuada e salva no banco de dados!');
+        setIsError(false);
+      } catch (error) {
+        console.error("Erro ao salvar no Firebase:", error);
+        setMessage('Erro ao conectar com o banco de dados.');
+        setIsError(true);
+      }
     } else {
       setMessage('Erro: A data de saída deve ser igual ou maior que a data de hoje.');
-      setIsError(true); // Definimos que é erro
+      setIsError(true);
     }
   };
 
@@ -62,7 +93,7 @@ const Pacotes = () => {
     <div className="pacotes-container">
       <h1 className="pacotes-title">Pacotes de Viagem</h1>
       <div className="pacotes-grid">
-        {pacotes.map((pacote, index) => (
+        {pacotesList.map((pacote, index) => (
           <div key={index} className="pacote-card">
             <img src={pacote.imagem} alt={pacote.nome} className="pacote-imagem" />
             <h2>{pacote.nome}</h2>
@@ -73,7 +104,6 @@ const Pacotes = () => {
         ))}
       </div>
 
-      {/* Modal */}
       {selectedPackage && (
         <Modal
           isOpen={isModalOpen}
@@ -90,32 +120,47 @@ const Pacotes = () => {
             <form className="reservation-form" onSubmit={handleConfirm}>
               <label>
                 Nome Completo:
-                <input type="text" required />
+                <input
+                  type="text"
+                  value={nomeCompleto}
+                  onChange={(e) => setNomeCompleto(e.target.value)}
+                  required
+                />
               </label>
               <label>
                 Email:
-                <input type="email" required />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </label>
               <label>
                 Telefone:
-                <input type="tel" required />
+                <input
+                  type="tel"
+                  value={telefone}
+                  onChange={(e) => setTelefone(e.target.value)}
+                  required
+                />
               </label>
               <label>
                 Data de Entrada:
-                <input 
-                  type="date" 
+                <input
+                  type="date"
                   value={checkInDate}
-                  onChange={(e) => setCheckInDate(e.target.value)} 
-                  required 
+                  onChange={(e) => setCheckInDate(e.target.value)}
+                  required
                 />
               </label>
               <label>
                 Data de Saída:
-                <input 
-                  type="date" 
+                <input
+                  type="date"
                   value={checkOutDate}
-                  onChange={(e) => setCheckOutDate(e.target.value)} 
-                  required 
+                  onChange={(e) => setCheckOutDate(e.target.value)}
+                  required
                 />
               </label>
               <button type="submit" className="confirm-btn">Confirmar</button>

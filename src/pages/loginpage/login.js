@@ -16,6 +16,7 @@ function Login() {
 
     // Verifica se o email e a senha são os valores definidos
     if (email === 'luizunifil@gmail.com' && password === '123') {
+      localStorage.setItem('usuarioLogado', 'true');
       setIsLoggedIn(true); // Exibe o modal de sucesso
     } else {
       setError('Usuário ou senha inválidos');
